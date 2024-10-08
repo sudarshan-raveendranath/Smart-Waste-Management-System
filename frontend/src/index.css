@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: radial-gradient(circle, white, #92E3A9)!important; /* Green to white gradient */
+  font-family: 'Roboto', sans-serif !important; /* Optional: choose your preferred font */
 }
 
 code {
