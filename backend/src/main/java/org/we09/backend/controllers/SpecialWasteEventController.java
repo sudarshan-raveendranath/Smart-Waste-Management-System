@@ -12,7 +12,6 @@ import java.util.List;
 @RequestMapping("/api/events")
 public class SpecialWasteEventController {
 
-
     private final SpecialWasteEventService service;
 
     public SpecialWasteEventController(SpecialWasteEventService service) {
