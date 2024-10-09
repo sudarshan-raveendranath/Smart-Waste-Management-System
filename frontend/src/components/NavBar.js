@@ -32,6 +32,12 @@ const NavBar = () => {
                     }}>
                         PROFILE
                     </Button>
+                    <Button color="inherit" component={Link} to="/"
+                    sx={{
+                        fontWeight: 'bold', // Bold text
+                    }}>
+                        CAREERS
+                    </Button>
                 </Box>
 
                 <Box>
