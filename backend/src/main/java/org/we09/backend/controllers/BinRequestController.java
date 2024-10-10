@@ -39,4 +39,10 @@ public class BinRequestController {
         service.deleteBinRequest(binRequestId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/user/{userId}/{binType}")
+    public ResponseEntity<List<BinRequestDto>> getBinRequestByUserIdAndBinType(@PathVariable String userId, @PathVariable String binType) {
+        List<BinRequestDto> binRequests = service.getBinRequestByUserIdAndBinType(userId, binType);
+        return ResponseEntity.ok(binRequests);
+    }
 }

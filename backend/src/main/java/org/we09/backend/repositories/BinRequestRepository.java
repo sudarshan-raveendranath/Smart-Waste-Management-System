@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BinRequestRepository extends MongoRepository<BinRequest, ObjectId> {
-    List<BinRequest> findByUserId(String userId);
+    List<BinRequest> findByUserIdAndBinType(String userId, String binType);
 }

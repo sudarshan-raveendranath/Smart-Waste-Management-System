@@ -9,4 +9,5 @@ public interface BinRequestService {
     void deleteBinRequest(String binRequestId);
     BinRequestDto getBinRequestById(String binRequestId);
     List<BinRequestDto> getAllBinRequests();
+    List<BinRequestDto> getBinRequestByUserIdAndBinType(String userId, String binType);
 }

@@ -26,9 +26,9 @@ function App() {
           <Route path="/HomePageContent" element={<HomePageContent />} />
           <Route path="/FeaturesAndServices" element={<FeaturesAndServices />} />
           <Route path="/TrashBin" element={<TrashBin />} />
-          <Route path="/RequestBin" element={<RequestBin />} />
+          <Route path="/RequestBins" element={<RequestBin />} />
           <Route path="/ViewMyBins" element={<ViewMyBins />} />
-          <Route path="/ManageBin" element={<ManageBin />} />
+          <Route path="/ManageBins" element={<ManageBin />} />
           <Route path="/BinPayments" element={<BinPayments />} />
         </Routes>
       </Layout>

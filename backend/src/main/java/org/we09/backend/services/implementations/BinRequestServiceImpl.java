@@ -75,4 +75,17 @@ public class BinRequestServiceImpl implements BinRequestService {
             throw new InternalServerErrorException("Error occurred while fetching all bin requests.");
         }
     }
+
+    @Override
+    public List<BinRequestDto> getBinRequestByUserIdAndBinType(String userId, String binType) {
+        try {
+            return binRequestRepository.findByUserIdAndBinType(userId, binType)
+                    .stream()
+                    .map(binRequestMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            throw new InternalServerErrorException("Error occurred while fetching bin requests by user ID and bin type.");
+        }
+    }
+
 }
