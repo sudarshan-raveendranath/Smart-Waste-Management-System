@@ -12,14 +12,14 @@ public class Bin {
 
     private String userId;
     private double totalWeight;
-    private double foodWeight = 0;
-    private double plasticWeight = 0;
-    private double paperWeight = 0;
+    private String binType;
+    private double filledWeight = 0;
     private String collectedStatus = "pending";
 
-    public Bin(String userId, double totalWeight) {
+    public Bin(String userId, double totalWeight, String binType) {
         this.userId = userId;
         this.totalWeight = totalWeight;
+        this.binType = binType;
     }
 
     public ObjectId getBinId() {
@@ -46,28 +46,20 @@ public class Bin {
         this.totalWeight = totalWeight;
     }
 
-    public double getFoodWeight() {
-        return foodWeight;
+    public String getBinType() {
+        return binType;
     }
 
-    public void setFoodWeight(double foodWeight) {
-        this.foodWeight = foodWeight;
+    public void setBinType(String binType) {
+        this.binType = binType;
     }
 
-    public double getPlasticWeight() {
-        return plasticWeight;
+    public double getFilledWeight() {
+        return filledWeight;
     }
 
-    public void setPlasticWeight(double plasticWeight) {
-        this.plasticWeight = plasticWeight;
-    }
-
-    public double getPaperWeight() {
-        return paperWeight;
-    }
-
-    public void setPaperWeight(double paperWeight) {
-        this.paperWeight = paperWeight;
+    public void setFilledWeight(double filledWeight) {
+        this.filledWeight = filledWeight;
     }
 
     public String getCollectedStatus() {

@@ -27,7 +27,7 @@ public class BinServiceImpl implements BinService {
 
     @Override
     public BinDto createBin(BinDto binDto) {
-        if (binDto.getUserId() == null || binDto.getTotalWeight() == 0.0) {
+        if (binDto.getUserId() == null || binDto.getTotalWeight() == 0.0 || binDto.getBinType() == null) {
             throw new BadRequestException("User ID and Total Weight are required fields.");
         }
 
@@ -49,22 +49,16 @@ public class BinServiceImpl implements BinService {
                 .orElseThrow(() -> new ResultNotFoundException("Bin not found with ID: " + binId));
 
         // Validate input data
-        if (binDto.getTotalWeight() == 0.0 && binDto.getPlasticWeight() == 0.0 && binDto.getPaperWeight() == 0.0 && binDto.getFoodWeight() == 0.0 && binDto.getCollectedStatus() == null) {
-            throw new BadRequestException("At least one field (TotalWeight, PlasticWeight, PaperWeight, FoodWeight, or CollectedStatus) must be provided for update.");
+        if (binDto.getTotalWeight() == 0.0 &&  binDto.getFilledWeight() == 0.0 && binDto.getCollectedStatus() == null) {
+            throw new BadRequestException("At least one field (TotalWeight, FilledWeight or CollectedStatus) must be provided for update.");
         }
 
         // Update the existing bin with non-null fields
         if (binDto.getTotalWeight() != 0.0) {
             existingBin.setTotalWeight(binDto.getTotalWeight());
         }
-        if (binDto.getPlasticWeight() != 0.0) {
-            existingBin.setPlasticWeight(binDto.getPlasticWeight());
-        }
-        if (binDto.getPaperWeight() != 0.0) {
-            existingBin.setPaperWeight(binDto.getPaperWeight());
-        }
-        if (binDto.getFoodWeight() != 0.0) {
-            existingBin.setFoodWeight(binDto.getFoodWeight());
+        if (binDto.getFilledWeight() != 0.0) {
+            existingBin.setFilledWeight(binDto.getFilledWeight());
         }
         if (binDto.getCollectedStatus() != null) {
             existingBin.setCollectedStatus(binDto.getCollectedStatus());

@@ -4,31 +4,28 @@ public class BinDto {
     private String binId;
     private String userId;
     private double totalWeight;
-    private double foodWeight;
-    private double plasticWeight;
-    private double paperWeight;
+    private String binType;
+    private double filledWeight;
     private String collectedStatus;
 
     public BinDto() {
     }
 
-    public BinDto(String userId, double totalWeight, double foodWeight, double plasticWeight, double paperWeight, String collectedStatus) {
+    public BinDto(String userId, double totalWeight, double filledWeight, String collectedStatus, String binType) {
         this.userId = userId;
         this.totalWeight = totalWeight;
-        this.foodWeight = foodWeight;
-        this.plasticWeight = plasticWeight;
-        this.paperWeight = paperWeight;
+        this.filledWeight = filledWeight;
         this.collectedStatus = collectedStatus;
+        this.binType = binType;
     }
 
-    public BinDto(String binId, String userId, double totalWeight, double foodWeight, double plasticWeight, double paperWeight, String collectedStatus) {
+    public BinDto(String binId, String userId, double totalWeight, double filledWeight, String collectedStatus, String binType) {
         this.binId = binId;
         this.userId = userId;
         this.totalWeight = totalWeight;
-        this.foodWeight = foodWeight;
-        this.plasticWeight = plasticWeight;
-        this.paperWeight = paperWeight;
+        this.filledWeight = filledWeight;
         this.collectedStatus = collectedStatus;
+        this.binType = binType;
     }
 
     public String getBinId() {
@@ -55,28 +52,20 @@ public class BinDto {
         this.totalWeight = totalWeight;
     }
 
-    public double getFoodWeight() {
-        return foodWeight;
+    public String getBinType() {
+        return binType;
     }
 
-    public void setFoodWeight(double foodWeight) {
-        this.foodWeight = foodWeight;
+    public void setBinType(String binType) {
+        this.binType = binType;
     }
 
-    public double getPlasticWeight() {
-        return plasticWeight;
+    public double getFilledWeight() {
+        return filledWeight;
     }
 
-    public void setPlasticWeight(double plasticWeight) {
-        this.plasticWeight = plasticWeight;
-    }
-
-    public double getPaperWeight() {
-        return paperWeight;
-    }
-
-    public void setPaperWeight(double paperWeight) {
-        this.paperWeight = paperWeight;
+    public void setFilledWeight(double filledWeight) {
+        this.filledWeight = filledWeight;
     }
 
     public String getCollectedStatus() {

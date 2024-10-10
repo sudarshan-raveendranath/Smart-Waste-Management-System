@@ -20,7 +20,7 @@ const NavBar = () => {
                     }}>
                         Home
                     </Button>
-                    <Button color="inherit" component={Link} to="/"
+                    <Button color="inherit" component={Link} to="/TrashBin"
                     sx={{
                         fontWeight: 'bold', // Bold text
                     }}>

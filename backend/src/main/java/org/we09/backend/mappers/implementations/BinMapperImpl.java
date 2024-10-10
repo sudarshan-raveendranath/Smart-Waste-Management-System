@@ -11,7 +11,8 @@ public class BinMapperImpl implements BinMapper {
     public Bin toEntity(BinDto binDto) {
         return new Bin(
                 binDto.getUserId(),
-                binDto.getTotalWeight()
+                binDto.getTotalWeight(),
+                binDto.getBinType()
         );
     }
 
@@ -21,10 +22,9 @@ public class BinMapperImpl implements BinMapper {
                 bin.getBinId().toHexString(),
                 bin.getUserId(),
                 bin.getTotalWeight(),
-                bin.getFoodWeight(),
-                bin.getFoodWeight(),
-                bin.getPaperWeight(),
-                bin.getCollectedStatus()
+                bin.getFilledWeight(),
+                bin.getCollectedStatus(),
+                bin.getBinType()
         );
     }
 }
