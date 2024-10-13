@@ -106,7 +106,7 @@ const RequestBinPage = () => {
             {/* Row with 3 boxes */}
             <Box sx={styles.boxContainer}>
                 {/* Food Waste Bin Box */}
-                <Box sx={styles.box}>
+                <Box sx={{ ...styles.box, background: 'linear-gradient(to right, #e0f7fa, #80cbc4)' }}>
                     <Typography variant="h6" sx={styles.boxTitle}>
                         Food Waste Bin
                     </Typography>
@@ -134,7 +134,7 @@ const RequestBinPage = () => {
                 </Box>
 
                 {/* Plastic Waste Bin Box */}
-                <Box sx={styles.box}>
+                <Box sx={{ ...styles.box, background: 'linear-gradient(to right, #e3f2fd, #90caf9)' }}>
                     <Typography variant="h6" sx={styles.boxTitle}>
                         Plastic Waste Bin
                     </Typography>
@@ -162,7 +162,7 @@ const RequestBinPage = () => {
                 </Box>
 
                 {/* Paper Waste Bin Box */}
-                <Box sx={styles.box}>
+                <Box sx={{ ...styles.box, background: 'linear-gradient(to right, #fffde7, #fff59d)' }}>
                     <Typography variant="h6" sx={styles.boxTitle}>
                         Paper Waste Bin
                     </Typography>

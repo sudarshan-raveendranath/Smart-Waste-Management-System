@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Box, Divider, Typography, Button, TextField, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 
-const RequestBinPage = () => {
+const ManageBinPage = () => {
     const userId = 'user987'; // Constant userId for requests
 
     const [binData, setBinData] = useState({
-        food: { totalCapacity: 0, filledCapacity: 0 },
-        plastic: { totalCapacity: 0, filledCapacity: 0 },
-        paper: { totalCapacity: 0, filledCapacity: 0 },
+        food: { totalCapacity: 0, filledCapacity: 0, availableCapacity: 0, binId: null },
+        plastic: { totalCapacity: 0, filledCapacity: 0, availableCapacity: 0, binId: null },
+        paper: { totalCapacity: 0, filledCapacity: 0, availableCapacity: 0, binId: null },
     });
 
     const [foodWasteWeight, setFoodWasteWeight] = useState('');
@@ -31,6 +31,7 @@ const RequestBinPage = () => {
                     switch (bin.binType) {
                         case 'food':
                             updatedData.food = {
+                                binId: bin.binId,
                                 totalCapacity: bin.totalWeight,
                                 filledCapacity: bin.filledWeight,
                                 availableCapacity: availableCapacity,
@@ -38,6 +39,7 @@ const RequestBinPage = () => {
                             break;
                         case 'plastic':
                             updatedData.plastic = {
+                                binId: bin.binId,
                                 totalCapacity: bin.totalWeight,
                                 filledCapacity: bin.filledWeight,
                                 availableCapacity: availableCapacity,
@@ -45,6 +47,7 @@ const RequestBinPage = () => {
                             break;
                         case 'paper':
                             updatedData.paper = {
+                                binId: bin.binId,
                                 totalCapacity: bin.totalWeight,
                                 filledCapacity: bin.filledWeight,
                                 availableCapacity: availableCapacity,
@@ -68,17 +71,73 @@ const RequestBinPage = () => {
         setOpenSnackbar(false);
     };
 
-    const handleUpdate = (wasteWeight, availableCapacity, wasteType) => {
-        if (parseFloat(wasteWeight) > availableCapacity) {
-            setSnackbarMessage(`You can only enter a maximum of ${availableCapacity} kg for ${wasteType}`);
+    const handleUpdate = (wasteWeight, availableCapacity, wasteType, binId, totalCapacity) => {
+        if (parseFloat(wasteWeight) > totalCapacity) {
+            setSnackbarMessage(`You can only enter a maximum of ${totalCapacity} kg for ${wasteType}`);
             setSnackbarSeverity('error');
             setOpenSnackbar(true);
         } else {
-            setSnackbarMessage(`Successfully updated ${wasteType} waste weight`);
-            setSnackbarSeverity('success');
-            setOpenSnackbar(true);
+            // Make an API request to update the bin's weight
+            axios.put(`http://localhost:8080/api/bins/${binId}`, { filledWeight: parseFloat(wasteWeight) })
+                .then(response => {
+                    setSnackbarMessage(`Successfully updated ${wasteType} waste weight`);
+                    setSnackbarSeverity('success');
+                    setOpenSnackbar(true);
+
+                    // Optionally, you can re-fetch the bin data to ensure the UI is updated
+                    axios.get(`http://localhost:8080/api/bins/user/${userId}`)
+                        .then(response => {
+                            const bins = response.data;
+                            const updatedData = { food: {}, plastic: {}, paper: {} };
+
+                            bins.forEach(bin => {
+                                const availableCapacity = bin.totalWeight - bin.filledWeight;
+                                switch (bin.binType) {
+                                    case 'food':
+                                        updatedData.food = {
+                                            binId: bin.binId,
+                                            totalCapacity: bin.totalWeight,
+                                            filledCapacity: bin.filledWeight,
+                                            availableCapacity: availableCapacity,
+                                        };
+                                        break;
+                                    case 'plastic':
+                                        updatedData.plastic = {
+                                            binId: bin.binId,
+                                            totalCapacity: bin.totalWeight,
+                                            filledCapacity: bin.filledWeight,
+                                            availableCapacity: availableCapacity,
+                                        };
+                                        break;
+                                    case 'paper':
+                                        updatedData.paper = {
+                                            binId: bin.binId,
+                                            totalCapacity: bin.totalWeight,
+                                            filledCapacity: bin.filledWeight,
+                                            availableCapacity: availableCapacity,
+                                        };
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            });
+
+                            setBinData(updatedData);
+                        })
+                        .catch(error => {
+                            setSnackbarMessage('Error fetching updated bin data');
+                            setSnackbarSeverity('error');
+                            setOpenSnackbar(true);
+                        });
+                })
+                .catch(error => {
+                    setSnackbarMessage(`Error updating ${wasteType} waste weight`);
+                    setSnackbarSeverity('error');
+                    setOpenSnackbar(true);
+                });
         }
     };
+
 
     return (
         <Box sx={styles.container}>
@@ -100,7 +159,7 @@ const RequestBinPage = () => {
 
             <Box sx={styles.boxContainer}>
                 {/* Food Waste Bin Box */}
-                <Box sx={styles.box}>
+                <Box sx={{ ...styles.box, background: 'linear-gradient(to right, #e0f7fa, #80cbc4)' }}>
                     <Typography variant="h6" sx={styles.boxTitle}>Food Waste Bin</Typography>
                     <img src="./images/foodbin.png" alt="Food Waste" style={styles.image} />
                     <Typography sx={styles.info}><strong>Total Capacity:</strong> <span>{binData.food.totalCapacity} kg</span></Typography>
@@ -118,14 +177,14 @@ const RequestBinPage = () => {
                     <Button
                         variant="contained"
                         sx={styles.requestButton}
-                        onClick={() => handleUpdate(foodWasteWeight, binData.food.availableCapacity, 'Food')}
+                        onClick={() => handleUpdate(foodWasteWeight, binData.food.availableCapacity, 'Food', binData.food.binId, binData.food.totalCapacity)}
                     >
                         Update
                     </Button>
                 </Box>
 
                 {/* Plastic Waste Bin Box */}
-                <Box sx={styles.box}>
+                <Box sx={{ ...styles.box, background: 'linear-gradient(to right, #e3f2fd, #90caf9)' }}>
                     <Typography variant="h6" sx={styles.boxTitle}>Plastic Waste Bin</Typography>
                     <img src="./images/plasticbin.png" alt="Plastic Waste" style={styles.image} />
                     <Typography sx={styles.info}><strong>Total Capacity:</strong> <span>{binData.plastic.totalCapacity} kg</span></Typography>
@@ -143,14 +202,14 @@ const RequestBinPage = () => {
                     <Button
                         variant="contained"
                         sx={styles.requestButton}
-                        onClick={() => handleUpdate(plasticWasteWeight, binData.plastic.availableCapacity, 'Plastic')}
+                        onClick={() => handleUpdate(plasticWasteWeight, binData.plastic.availableCapacity, 'Plastic', binData.plastic.binId, binData.plastic.totalCapacity)}
                     >
                         Update
                     </Button>
                 </Box>
 
                 {/* Paper Waste Bin Box */}
-                <Box sx={styles.box}>
+                <Box sx={{ ...styles.box, background: 'linear-gradient(to right, #fffde7, #fff59d)' }}>
                     <Typography variant="h6" sx={styles.boxTitle}>Paper Waste Bin</Typography>
                     <img src="./images/paperbin.png" alt="Paper Waste" style={styles.image} />
                     <Typography sx={styles.info}><strong>Total Capacity:</strong> <span>{binData.paper.totalCapacity} kg</span></Typography>
@@ -168,7 +227,7 @@ const RequestBinPage = () => {
                     <Button
                         variant="contained"
                         sx={styles.requestButton}
-                        onClick={() => handleUpdate(paperWasteWeight, binData.paper.availableCapacity, 'Paper')}
+                        onClick={() => handleUpdate(paperWasteWeight, binData.paper.availableCapacity, 'Paper', binData.paper.binId, binData.paper.totalCapacity)}
                     >
                         Update
                     </Button>
@@ -274,4 +333,4 @@ const styles = {
     },
 };
 
-export default RequestBinPage;
+export default ManageBinPage;
