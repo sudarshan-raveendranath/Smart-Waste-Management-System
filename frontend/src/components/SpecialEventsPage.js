@@ -7,7 +7,7 @@ import SpecialEventPayment from './SpecialEventPayment';
 
 const SegmentedButtonGroup = () => {
   // State to manage the active component
-  const [activeButton, setActiveButton] = useState('requestEvent');
+  const [activeButton, setActiveButton] = useState('manageEvent');
 
   // Function to render the component based on the selected button
   const renderComponent = () => {
@@ -19,7 +19,7 @@ const SegmentedButtonGroup = () => {
       case 'eventPayments':
         return <SpecialEventPayment />;
       default:
-        return <RequestSpecialEvent />;
+        return <ManageSpecialEvents />;
     }
   };
 

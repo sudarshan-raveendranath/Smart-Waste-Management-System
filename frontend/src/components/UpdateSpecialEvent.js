@@ -5,7 +5,7 @@ import { Container, TextField, Button, Snackbar, Alert, Typography, Divider, Box
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-const SpecialWasteRequest = () => {
+const SpecialWasteRequestUpdate = () => {
     // Form state management
     const [date, setDate] = useState(null);
     const [wasteType, setWasteType] = useState('');
@@ -281,4 +281,4 @@ const styles = {
     },
 };
 
-export default SpecialWasteRequest;
+export default SpecialWasteRequestUpdate;

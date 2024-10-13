@@ -16,6 +16,7 @@ import SpecialEventsPage from './components/SpecialEventsPage';
 import ManageSpecialEvents from './components/ManageSpecialEvents';
 import RequestSpecialEvents from './components/RequestSpecialEvent';
 import SpecialEventPayment from './components/SpecialEventPayment';
+import UpdateSpecialEvent from './components/UpdateSpecialEvent';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/ManageSpecialEvents" element={<ManageSpecialEvents />} />
           <Route path="/RequestSpecialEvents" element={<RequestSpecialEvents />} />
           <Route path="/SpecialEventPayment" element={<SpecialEventPayment />} />
+          <Route path="/UpdateSpecialEvent" element={<UpdateSpecialEvent />} />
         </Routes>
       </Layout>
     </Router>
