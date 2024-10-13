@@ -13,7 +13,9 @@ public class SpecialWasteEventMapperImpl implements SpecialWasteEventMapper {
         return new SpecialWasteEvent(
                 eventDTO.getUserId(),
                 eventDTO.getDate(),
-                eventDTO.getWasteType()
+                eventDTO.getWasteType(),
+                eventDTO.getMessage(),
+                eventDTO.getAddress()
         );
     }
 
@@ -24,7 +26,9 @@ public class SpecialWasteEventMapperImpl implements SpecialWasteEventMapper {
                 event.getUserId(),
                 event.getDate(),
                 event.getWasteType(),
-                event.getCollectedStatus()
+                event.getCollectedStatus(),
+                event.getMessage(),
+                event.getAddress()
         );
     }
 }

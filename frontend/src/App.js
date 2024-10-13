@@ -12,6 +12,10 @@ import RequestBin from './components/RequestBin';
 import ViewMyBins from './components/ViewMyBins';
 import ManageBin from './components/ManageBin';
 import BinPayments from './components/BinPayments';
+import SpecialEventsPage from './components/SpecialEventsPage';
+import ManageSpecialEvents from './components/ManageSpecialEvents';
+import RequestSpecialEvents from './components/RequestSpecialEvent';
+import SpecialEventPayment from './components/SpecialEventPayment';
 
 function App() {
   return (
@@ -30,6 +34,10 @@ function App() {
           <Route path="/ViewMyBins" element={<ViewMyBins />} />
           <Route path="/ManageBins" element={<ManageBin />} />
           <Route path="/BinPayments" element={<BinPayments />} />
+          <Route path="/SpecialEventsPage" element={<SpecialEventsPage />} />
+          <Route path="/ManageSpecialEvents" element={<ManageSpecialEvents />} />
+          <Route path="/RequestSpecialEvents" element={<RequestSpecialEvents />} />
+          <Route path="/SpecialEventPayment" element={<SpecialEventPayment />} />
         </Routes>
       </Layout>
     </Router>

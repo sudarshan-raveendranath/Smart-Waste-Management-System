@@ -1,28 +1,25 @@
 import React, { useState } from 'react';
 
 // Importing your separate components
-import RequestBin from './RequestBin';
-import ManageBin from './ManageBin';
-import ViewMyBins from './ViewMyBins';
-import Payments from './BinPayments';
+import RequestSpecialEvent from './RequestSpecialEvent';
+import ManageSpecialEvents from './ManageSpecialEvents';
+import SpecialEventPayment from './SpecialEventPayment';
 
 const SegmentedButtonGroup = () => {
   // State to manage the active component
-  const [activeButton, setActiveButton] = useState('viewMyBins');
+  const [activeButton, setActiveButton] = useState('requestEvent');
 
   // Function to render the component based on the selected button
   const renderComponent = () => {
     switch (activeButton) {
-      case 'requestBin':
-        return <RequestBin />;
-      case 'manageBins':
-        return <ManageBin />;
-      case 'viewMyBins':
-        return <ViewMyBins />;
-      case 'payments':
-        return <Payments />;
+      case 'requestEvent':
+        return <RequestSpecialEvent />;
+      case 'manageEvent':
+        return <ManageSpecialEvents />;
+      case 'eventPayments':
+        return <SpecialEventPayment />;
       default:
-        return <ViewMyBins />;
+        return <RequestSpecialEvent />;
     }
   };
 
@@ -31,26 +28,20 @@ const SegmentedButtonGroup = () => {
       {/* Segmented Button Group */}
       <div style={styles.buttonGroup}>
         <button
-          style={{ ...styles.button, backgroundColor: activeButton === 'requestBin' ? '#157045' : '#4caf50',borderRight: '2px solid white', }}
-          onClick={() => setActiveButton('requestBin')}
+          style={{ ...styles.button, backgroundColor: activeButton === 'requestEvent' ? '#157045' : '#4caf50',borderRight: '2px solid white', }}
+          onClick={() => setActiveButton('requestEvent')}
         >
-          Request Bin
+          Request Event
         </button>
         <button
-          style={{ ...styles.button, backgroundColor: activeButton === 'manageBins' ? '#157045' : '#4caf50',borderRight: '2px solid white', }}
-          onClick={() => setActiveButton('manageBins')}
+          style={{ ...styles.button, backgroundColor: activeButton === 'manageEvent' ? '#157045' : '#4caf50',borderRight: '2px solid white', }}
+          onClick={() => setActiveButton('manageEvent')}
         >
-          Manage Bins
+          Manage Event Requests
         </button>
         <button
-          style={{ ...styles.button, backgroundColor: activeButton === 'viewMyBins' ? '#157045' : '#4caf50',borderRight: '2px solid white', }}
-          onClick={() => setActiveButton('viewMyBins')}
-        >
-          View My Bins
-        </button>
-        <button
-          style={{ ...styles.button, backgroundColor: activeButton === 'payments' ? '#157045' : '#4caf50' }}
-          onClick={() => setActiveButton('payments')}
+          style={{ ...styles.button, backgroundColor: activeButton === 'eventPayments' ? '#157045' : '#4caf50',borderRight: '2px solid white', }}
+          onClick={() => setActiveButton('eventPayments')}
         >
           Payments
         </button>

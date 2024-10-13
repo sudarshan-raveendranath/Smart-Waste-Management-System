@@ -26,7 +26,13 @@ const NavBar = () => {
                     }}>
                         TRASH BIN
                     </Button>
-                    <Button color="inherit" component={Link} to="/"
+                    <Button color="inherit" component={Link} to="/SpecialEventsPage"
+                    sx={{
+                        fontWeight: 'bold', // Bold text
+                    }}>
+                        SPECIAL EVENTS
+                    </Button>
+                    <Button color="inherit" component={Link} to=""
                     sx={{
                         fontWeight: 'bold', // Bold text
                     }}>

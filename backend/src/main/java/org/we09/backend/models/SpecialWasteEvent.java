@@ -14,13 +14,25 @@ public class SpecialWasteEvent {
     private String userId;
     private LocalDate date;
     private String wasteType;
+    private String message = "No Special Waste Event Message";
+    private String address;// Default value
     private String collectedStatus = "pending"; // Default value
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     // Constructor
-    public SpecialWasteEvent(String userId, LocalDate date, String wasteType) {
+    public SpecialWasteEvent(String userId, LocalDate date, String wasteType, String message, String address) {
         this.userId = userId;
         this.date = date;
         this.wasteType = wasteType;
+        this.message = message;
+        this.address = address;
     }
 
     public ObjectId getEventId() {
@@ -50,6 +62,14 @@ public class SpecialWasteEvent {
 
     public String getWasteType() {
         return wasteType;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void setWasteType(String wasteType) {

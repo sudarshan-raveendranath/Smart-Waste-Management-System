@@ -29,8 +29,8 @@ public class SpecialWasteEventServiceImpl implements SpecialWasteEventService {
     @Override
     public SpecialWasteEventDto createEvent(SpecialWasteEventDto eventDTO) {
         // Check for missing required fields
-        if (eventDTO.getUserId() == null || eventDTO.getWasteType() == null || eventDTO.getDate() == null) {
-            throw new BadRequestException("User ID, Waste Type, and Date are required fields.");
+        if (eventDTO.getUserId() == null || eventDTO.getWasteType() == null || eventDTO.getDate() == null || eventDTO.getAddress() == null) {
+            throw new BadRequestException("User ID, Waste Type, address and Date are required fields.");
         }
 
         try {
@@ -51,8 +51,8 @@ public class SpecialWasteEventServiceImpl implements SpecialWasteEventService {
                 .orElseThrow(() -> new ResultNotFoundException("Event not found with ID: " + eventId));
 
         // Validate input data
-        if (eventDTO.getDate() == null && eventDTO.getWasteType() == null && eventDTO.getCollectedStatus() == null) {
-            throw new BadRequestException("At least one field (Date, WasteType, or CollectedStatus) must be provided for update.");
+        if (eventDTO.getDate() == null && eventDTO.getWasteType() == null && eventDTO.getCollectedStatus() == null && eventDTO.getMessage() == null && eventDTO.getAddress() == null) {
+            throw new BadRequestException("At least one field (Date, WasteType, message, address or CollectedStatus) must be provided for update.");
         }
 
         // Update the existing event with non-null fields
@@ -64,6 +64,12 @@ public class SpecialWasteEventServiceImpl implements SpecialWasteEventService {
         }
         if (eventDTO.getCollectedStatus() != null) {
             existingEvent.setCollectedStatus(eventDTO.getCollectedStatus());
+        }
+        if (eventDTO.getMessage() != null) {
+            existingEvent.setMessage(eventDTO.getMessage());
+        }
+        if (eventDTO.getAddress() != null) {
+            existingEvent.setAddress(eventDTO.getAddress());
         }
 
         try {
