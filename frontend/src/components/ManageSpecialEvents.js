@@ -88,12 +88,12 @@ const SpecialWasteManage = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell onClick={() => sortEvents('date')}>Date</TableCell>
-                                <TableCell onClick={() => sortEvents('wasteType')}>Waste Type</TableCell>
-                                <TableCell onClick={() => sortEvents('address')}>Address</TableCell>
-                                <TableCell>Message</TableCell>
-                                <TableCell>Collection Status</TableCell>
-                                <TableCell>Actions</TableCell>
+                                <TableCell onClick={() => sortEvents('date')} sx={{ fontWeight: 'bold' }}>Date</TableCell>
+                                <TableCell onClick={() => sortEvents('wasteType')} sx={{ fontWeight: 'bold' }}>Waste Type</TableCell>
+                                <TableCell onClick={() => sortEvents('address')} sx={{ fontWeight: 'bold' }}>Address</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Message</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Collection Status</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

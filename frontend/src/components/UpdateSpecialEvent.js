@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Container, TextField, Button, Snackbar, Alert, Typography, Divider, Box } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 const SpecialWasteRequestUpdate = () => {
-    // Form state management
-    const [date, setDate] = useState(null);
-    const [wasteType, setWasteType] = useState('');
-    const [address, setAddress] = useState('');
-    const [message, setMessage] = useState('');
+    const location = useLocation();
+    const { eventId, wasteType: passedWasteType, address: passedAddress, date: passedDate, message: passedMessage } = location.state || {};
+
+    const [date, setDate] = useState(passedDate ? dayjs(passedDate) : null);  // Initial value from passed data
+    const [wasteType, setWasteType] = useState(passedWasteType || '');
+    const [address, setAddress] = useState(passedAddress || '');
+    const [message, setMessage] = useState(passedMessage || '');
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: '' });
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
-    const USER_ID = '12345'; // Constant for user ID
-
-    // Form validation
     const validateForm = () => {
         const newErrors = {};
         if (!date) newErrors.date = 'Date is required';
@@ -27,102 +27,60 @@ const SpecialWasteRequestUpdate = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    // Simulate save method
-    const saveRequest = () => {
-        // Collect form data
+    const updateRequest = () => {
         const requestData = {
-            userId: USER_ID,
-            date: date ? date.format('YYYY-MM-DD') : '',
-            wasteType,
-            address,
-            message,
+            userId: '12345',  // Assume a constant user ID
+            date: date ? date.format('YYYY-MM-DD') : passedDate,
+            wasteType: wasteType || passedWasteType,
+            address: address || passedAddress,
+            message: message || passedMessage,
         };
 
-        // Validate form
         if (validateForm()) {
-            // Make POST request to the backend
-            axios.post('http://localhost:8080/api/events', requestData)
+            axios.put(`http://localhost:8080/api/events/${eventId}`, requestData)
                 .then((response) => {
-                    // Handle success response
-                    console.log(response.data);
-                    setSnackbar({ open: true, message: 'Request submitted successfully!', severity: 'success' });
+                    setSnackbar({ open: true, message: 'Request updated successfully!', severity: 'success' });
                 })
                 .catch((error) => {
-                    // Handle error response
-                    console.error('Error submitting request:', error);
-                    setSnackbar({ open: true, message: 'Error submitting request. Please try again.', severity: 'error' });
+                    setSnackbar({ open: true, message: 'Error updating request. Please try again.', severity: 'error' });
                 });
         } else {
-            // Show error snackbar if validation fails
             setSnackbar({ open: true, message: 'Please fill all required fields', severity: 'error' });
         }
     };
 
-    // Handle form submission
     const handleSubmit = () => {
         if (validateForm()) {
-            saveRequest(); // Call the save method
+            updateRequest();
         } else {
-            // Show error snackbar
             setSnackbar({ open: true, message: 'Please fill all required fields', severity: 'error' });
         }
     };
 
-    // Handle closing snackbar
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setSnackbar({ open: false, message: '', severity: '' });
         if (snackbar.severity === 'success') {
-            navigate('/ManageSpecialEvents'); // Navigate to ManageRequest after successful submission
+            navigate('/ManageSpecialEvents');
         }
     };
 
     return (
         <>
-            {/* Title and Description outside the container */}
             <Divider sx={styles.divider}>
-                <Typography variant="h4" sx={styles.title}>
-                    Request Special Waste Event
-                </Typography>
+                <Typography variant="h4" sx={styles.title}>Update Special Waste Event</Typography>
             </Divider>
 
             <Typography variant="body1" sx={styles.description}>
-                Please fill the form below to request a special waste collection event.
+                Please update the form below to modify your special waste collection event.
             </Typography>
 
-            {/* Form Container */}
-            <Container
-                maxWidth="md" // Increase container width
-                sx={{
-                    background: 'radial-gradient(circle, white, #92E3A9)',
-                    padding: 4,
-                    borderRadius: 20,
-                    marginTop: 4,
-                    boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.6)', // Add shadow
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
-                {/* Image Placeholder */}
-                <img
-                    src="./images/seventpic.png" // Replace with actual image URL
-                    alt="Event"
-                    style={{ display: 'block', margin: '20px auto', borderRadius: '8px' }}
-                />
+            <Container maxWidth="md" sx={styles.container}>
+                <img src="./images/5.png" alt="Event" style={styles.image} />
 
-                {/* Form Fields */}
-                <Box
-                    sx={{
-                        width: '100%',
-                        maxWidth: 500, // Increase max width of form fields
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box sx={styles.formContainer}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Choose Date"
@@ -135,129 +93,62 @@ const SpecialWasteRequestUpdate = () => {
                                     margin="normal"
                                     error={Boolean(errors.date)}
                                     helperText={errors.date}
-                                    sx={{
-                                        width: '100%', // Ensure full width
-                                        '& .MuiOutlinedInput-root': {
-                                            borderRadius: '15px', // Rounded corners for the input container
-                                            borderWidth: '2px', // Set border width
-                                            borderColor: errors.date ? 'red' : '#ccc', // Change color on error
-                                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#157045', // Change color on hover
-                                            },
-                                        },
-                                        '& .MuiOutlinedInput-notchedOutline': {
-                                            borderRadius: '15px', // Rounded corners for the outline
-                                            borderWidth: '2px', // Set outline border width
-                                        },
-                                    }}
+                                    sx={styles.input}
                                 />
                             )}
                         />
                     </LocalizationProvider>
 
-
                     <TextField
-                        label="Waste Type"
-                        value={wasteType}
+                        label="Waste Type" // Controlled value, initially empty
                         onChange={(e) => setWasteType(e.target.value)}
                         fullWidth
                         margin="normal"
-                        error={Boolean(errors.wasteType)}
-                        helperText={errors.wasteType}
-                        sx={{
-                            width: '100%',
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: '15px', // Rounded corners for the input
-                                borderWidth: '2px', // Set border width
-                                borderColor: errors.wasteType ? 'red' : '#ccc', // Change color on error
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: '#157045', // Change color on hover
-                                },
-                            },
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                borderRadius: '15px', // Rounded corners for the outline
-                                borderWidth: '2px', // Set outline border width
-                            },
+                        placeholder={passedWasteType}
+                        InputLabelProps={{
+                            shrink: true,  // Ensures label stays on top
                         }}
+                        error={Boolean(errors.wasteType)}
+                        helperText={errors.wasteType} // Show the passed value as a hint
+                        sx={styles.input}
                     />
 
                     <TextField
                         label="Address"
-                        value={address}
                         onChange={(e) => setAddress(e.target.value)}
                         fullWidth
                         margin="normal"
+                        placeholder={passedAddress}
                         error={Boolean(errors.address)}
-                        helperText={errors.address}
-                        sx={{
-                            width: '100%',
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: '15px', // Rounded corners for the input
-                                borderWidth: '2px', // Set border width
-                                borderColor: errors.address ? 'red' : '#ccc', // Change color on error
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: '#157045', // Change color on hover
-                                },
-                            },
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                borderRadius: '15px', // Rounded corners for the outline
-                                borderWidth: '2px', // Set outline border width
-                            },
+                        InputLabelProps={{
+                            shrink: true,  // Ensures label stays on top
                         }}
+                        helperText={errors.address} // Show the passed value as a hint
+                        sx={styles.input}
                     />
 
                     <TextField
                         label="Message (Optional)"
-                        value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         fullWidth
                         margin="normal"
-                        multiline
-                        rows={4}
-                        sx={{
-                            width: '100%',
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: '15px', // Rounded corners for the input
-                                borderWidth: '2px', // Set border width
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: '#157045', // Change color on hover
-                                },
-                            },
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                borderRadius: '15px', // Rounded corners for the outline
-                                borderWidth: '2px', // Set outline border width
-                            },
+                        placeholder={passedMessage}
+                        InputLabelProps={{
+                            shrink: true,  // Ensures label stays on top
                         }}
+                        multiline
+                        rows={4}  // Show the passed value as a hint
+                        sx={styles.input}
                     />
 
-                    {/* Submit Button */}
-                    <Button
-                        variant="contained"
-                        fullWidth
-                        sx={{
-                            mt: 3,
-                            borderRadius: 10,
-                            height: 50, // Increase button height
-                            backgroundColor: '#157045', // Change button color
-                            fontWeight: 'bold', // Make button text bold
-                            '&:hover': {
-                                backgroundColor: '#145c38',
-                            },
-                        }}
-                        onClick={handleSubmit}
-                    >
-                        Request Event
+
+                    <Button variant="contained" fullWidth sx={styles.button} onClick={handleSubmit}>
+                        Update Event
                     </Button>
                 </Box>
             </Container>
 
-            {/* Snackbar for success or error messages */}
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
+            <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
                     {snackbar.message}
                 </Alert>
@@ -267,17 +158,49 @@ const SpecialWasteRequestUpdate = () => {
 };
 
 const styles = {
-    divider: {
-        marginBottom: '10px',
+    divider: { marginBottom: '10px', marginTop: '40px' },
+    title: { fontWeight: 'bold', color: '#157045', textAlign: 'center', },
+    description: { marginBottom: '50px', textAlign: 'center' },
+    container: {
+        background: 'radial-gradient(circle, white, #92E3A9)',
+        padding: 4,
+        borderRadius: 20,
+        marginTop: 4,
+        marginBottom: 4,
+        boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.6)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
-    title: {
+    image: { display: 'block', margin: '20px auto', borderRadius: '8px' },
+    formContainer: {
+        width: '100%',
+        maxWidth: 500,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    input: {
+        width: '100%',
+        '& .MuiOutlinedInput-root': {
+            borderRadius: '15px',
+            borderWidth: '2px',
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#157045',
+            },
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+            borderRadius: '15px',
+            borderWidth: '2px',
+        },
+    },
+    button: {
+        mt: 3,
+        borderRadius: 10,
+        height: 50,
+        backgroundColor: '#157045',
         fontWeight: 'bold',
-        color: '#157045',
-        textAlign: 'center',
-    },
-    description: {
-        marginBottom: '50px',
-        textAlign: 'center',
+        '&:hover': { backgroundColor: '#145c38' },
     },
 };
 
