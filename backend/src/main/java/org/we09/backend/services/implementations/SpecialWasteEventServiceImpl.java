@@ -82,13 +82,27 @@ public class SpecialWasteEventServiceImpl implements SpecialWasteEventService {
 
     @Override
     public SpecialWasteEventDto getEventById(String eventId) {
+        if (eventId == null || !ObjectId.isValid(eventId)) {
+            throw new BadRequestException("Invalid Event ID provided.");
+        }
+
         ObjectId id = new ObjectId(eventId); // Convert String to ObjectId
 
-        // Check if the event exists
-        SpecialWasteEvent event = repository.findById(id)
-                .orElseThrow(() -> new ResultNotFoundException("Event not found with ID: " + eventId));
-        return mapper.toDTO(event);
+        try {
+            // Check if the event exists
+            SpecialWasteEvent event = repository.findById(id)
+                    .orElseThrow(() -> new ResultNotFoundException("Event not found with ID: " + eventId));
+            return mapper.toDTO(event);
+        } catch (ResultNotFoundException e) {
+            // Re-throw the specific exception
+            throw e;
+        } catch (Exception ex) {
+            // Catch all other exceptions and throw an InternalServerErrorException
+            throw new InternalServerErrorException("Error occurred while retrieving the event.");
+        }
     }
+
+
 
     @Override
     public List<SpecialWasteEventDto> getEventsByUserId(String userId) {
@@ -96,14 +110,23 @@ public class SpecialWasteEventServiceImpl implements SpecialWasteEventService {
             throw new BadRequestException("User ID must be provided.");
         }
 
-        return repository.findByUserId(userId)
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+        try {
+            return repository.findByUserId(userId)
+                    .stream()
+                    .map(mapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            throw new InternalServerErrorException("Error occurred while retrieving events for user ID: " + userId);
+        }
     }
 
     @Override
     public void deleteEvent(String eventId) {
+
+        if (eventId == null || !ObjectId.isValid(eventId)) {
+            throw new BadRequestException("Invalid Event ID provided.");
+        }
+
         ObjectId id = new ObjectId(eventId); // Convert String to ObjectId
 
         // Check if the event exists

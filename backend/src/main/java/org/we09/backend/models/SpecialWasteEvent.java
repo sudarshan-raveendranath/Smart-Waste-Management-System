@@ -83,4 +83,48 @@ public class SpecialWasteEvent {
     public void setCollectedStatus(String collectedStatus) {
         this.collectedStatus = collectedStatus;
     }
+
+    public static class Builder {
+        private String userId;
+        private LocalDate date;
+        private String wasteType;
+        private String message = "No Special Waste Event Message"; // Default value
+        private String address;
+        private String collectedStatus = "pending"; // Default value
+
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder date(LocalDate date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder wasteType(String wasteType) {
+            this.wasteType = wasteType;
+            return this;
+        }
+
+        public Builder message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder collectedStatus(String collectedStatus) {
+            this.collectedStatus = collectedStatus;
+            return this;
+        }
+
+        // Build method to create a SpecialWasteEvent object
+        public SpecialWasteEvent build() {
+            return new SpecialWasteEvent(userId, date, wasteType, message, address);
+        }
+    }
 }

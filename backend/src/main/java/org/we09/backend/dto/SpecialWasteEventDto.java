@@ -24,6 +24,16 @@ public class SpecialWasteEventDto {
         this.address = address;
     }
 
+    public SpecialWasteEventDto(Builder builder) {
+        this.eventId = builder.eventId;
+        this.userId = builder.userId;
+        this.date = builder.date;
+        this.wasteType = builder.wasteType;
+        this.collectedStatus = builder.collectedStatus;
+        this.message = builder.message;
+        this.address = builder.address;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -86,5 +96,55 @@ public class SpecialWasteEventDto {
 
     public void setCollectedStatus(String collectedStatus) {
         this.collectedStatus = collectedStatus;
+    }
+
+    // Builder class
+    public static class Builder {
+        private String eventId;
+        private String userId;
+        private LocalDate date;
+        private String wasteType;
+        private String collectedStatus;
+        private String message;
+        private String address;
+
+        public Builder eventId(String eventId) {
+            this.eventId = eventId;
+            return this;
+        }
+
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder date(LocalDate date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder wasteType(String wasteType) {
+            this.wasteType = wasteType;
+            return this;
+        }
+
+        public Builder collectedStatus(String collectedStatus) {
+            this.collectedStatus = collectedStatus;
+            return this;
+        }
+
+        public Builder message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public SpecialWasteEventDto build() {
+            return new SpecialWasteEventDto(this);
+        }
     }
 }
